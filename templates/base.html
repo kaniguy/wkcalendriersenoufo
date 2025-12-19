@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Calendrier Culturel Sénoufo - Groupe Wolokoulo Kalèguélé{% endblock %}</title>
+    {% load static %}
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'image/logo.png' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'image/logo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'image/logo.png' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -19,8 +24,10 @@
         <div class="container mx-auto px-4 py-6">
             <!-- Logo -->
             <div class="flex justify-center items-center mb-4">
-                <img src="{% static 'image/logo.png' %}" alt="Logo Groupe Wolokoulo Kalèguélé" 
-                     class="h-20 w-auto object-contain">
+                <a href="{% url 'calendrier:calendrier' %}" class="flex justify-center items-center">
+                    <img src="{% static 'image/logo.png' %}" alt="Logo Groupe Wolokoulo Kalèguélé" 
+                         class="h-24 w-auto object-contain hover:opacity-90 transition-opacity">
+                </a>
             </div>
             <!-- Lien connexion/gestion en haut à droite -->
             <div class="absolute top-4 right-4 flex items-center gap-3">
