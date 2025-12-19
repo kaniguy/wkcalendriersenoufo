@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion - Calendrier Culturel{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Tableau de Bord de Gestion</h1>
+        <p class="text-gray-600">Gérez les sous-groupes, jours culturels, partenaires et membres</p>
+    </div>
+    
+    {% if messages %}
+    <div class="mb-6">
+        {% for message in messages %}
+        <div class="p-4 rounded-lg {% if message.tags == 'error' %}bg-red-100 text-red-700 border border-red-300{% elif message.tags == 'success' %}bg-green-100 text-green-700 border border-green-300{% else %}bg-blue-100 text-blue-700 border border-blue-300{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Statistiques -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg shadow-md p-6 text-white">
+            <h3 class="text-lg font-semibold mb-2">Sous-groupes</h3>
+            <p class="text-3xl font-bold">{{ total_sous_groupes }}</p>
+        </div>
+        <div class="bg-gradient-to-r from-orange-500 to-red-500 rounded-lg shadow-md p-6 text-white">
+            <h3 class="text-lg font-semibold mb-2">Partenaires</h3>
+            <p class="text-3xl font-bold">{{ total_partenaires }}</p>
+        </div>
+        <div class="bg-gradient-to-r from-red-500 to-pink-500 rounded-lg shadow-md p-6 text-white">
+            <h3 class="text-lg font-semibold mb-2">Membres</h3>
+            <p class="text-3xl font-bold">{{ total_membres }}</p>
+        </div>
+    </div>
+    
+    <!-- Sous-groupes -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-800">Sous-groupes</h2>
+            <a href="{% url 'calendrier:gestion_sous_groupe' %}" 
+               class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg transition">
+                + Ajouter un sous-groupe
+            </a>
+        </div>
+        
+        {% if sous_groupes %}
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-4 py-2 text-left">Nom</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Jour de référence</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Jours culturels</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Statut</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sg in sous_groupes %}
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2 font-semibold">{{ sg.nom }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ sg.jour_reference|date:"d/m/Y" }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">{{ sg.jours_culturels.count }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            {% if sg.actif %}
+                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-sm">Actif</span>
+                            {% else %}
+                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm">Inactif</span>
+                            {% endif %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            <a href="{% url 'calendrier:gestion_sous_groupe_detail' sg.id %}" 
+                               class="text-blue-600 hover:text-blue-800 underline mr-2">Gérer</a>
+                            <a href="{% url 'calendrier:gestion_sous_groupe_edit' sg.id %}" 
+                               class="text-amber-600 hover:text-amber-800 underline">Modifier</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-center py-8">Aucun sous-groupe créé pour le moment.</p>
+        {% endif %}
+    </div>
+    
+    <!-- Partenaires -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-800">Partenaires</h2>
+            <a href="{% url 'calendrier:gestion_partenaire' %}" 
+               class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg transition">
+                + Ajouter un partenaire
+            </a>
+        </div>
+        
+        {% if partenaires %}
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-4 py-2 text-left">Nom</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">URL</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Logo</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Statut</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for partenaire in partenaires %}
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2 font-semibold">{{ partenaire.nom }}</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            {% if partenaire.url %}
+                            <a href="{{ partenaire.url }}" target="_blank" class="text-blue-600 hover:underline">
+                                {{ partenaire.url|truncatechars:30 }}
+                            </a>
+                            {% else %}
+                            <span class="text-gray-400">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            {% if partenaire.logo %}
+                            <span class="text-green-600">✓</span>
+                            {% else %}
+                            <span class="text-gray-400">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            {% if partenaire.actif %}
+                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-sm">Actif</span>
+                            {% else %}
+                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm">Inactif</span>
+                            {% endif %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            <a href="{% url 'calendrier:gestion_partenaire_edit' partenaire.id %}" 
+                               class="text-amber-600 hover:text-amber-800 underline mr-2">Modifier</a>
+                            <a href="{% url 'calendrier:gestion_partenaire_delete' partenaire.id %}" 
+                               class="text-red-600 hover:text-red-800 underline"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce partenaire ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-center py-8">Aucun partenaire créé pour le moment.</p>
+        {% endif %}
+    </div>
+    
+    <!-- Membres -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mt-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-800">Membres</h2>
+            <a href="{% url 'calendrier:gestion_membre' %}" 
+               class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg transition">
+                + Ajouter un membre
+            </a>
+        </div>
+        
+        {% if membres %}
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-4 py-2 text-left">Nom</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">WhatsApp</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Date de naissance</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Notifications</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for membre in membres %}
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2 font-semibold">
+                            {{ membre.nom }} {% if membre.prenom %}{{ membre.prenom }}{% endif %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2">{{ membre.email }}</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            {% if membre.telephone_whatsapp %}
+                            <a href="https://wa.me/{{ membre.telephone_whatsapp|slice:'1:' }}" 
+                               target="_blank" 
+                               class="text-green-600 hover:text-green-800 underline">
+                                {{ membre.telephone_whatsapp }}
+                            </a>
+                            {% else %}
+                            <span class="text-gray-400">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2">{{ membre.date_naissance|date:"d/m/Y" }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            {% if membre.notifications_email %}
+                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-sm">Activées</span>
+                            {% else %}
+                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm">Désactivées</span>
+                            {% endif %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            <a href="{% url 'calendrier:gestion_membre_edit' membre.id %}" 
+                               class="text-amber-600 hover:text-amber-800 underline mr-2">Modifier</a>
+                            <a href="{% url 'calendrier:gestion_membre_delete' membre.id %}" 
+                               class="text-red-600 hover:text-red-800 underline"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce membre ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-center py-8">Aucun membre enregistré pour le moment.</p>
+        {% endif %}
+    </div>
+    
+    <div class="mt-6 text-center">
+        <a href="{% url 'calendrier:calendrier' %}" 
+           class="text-amber-600 hover:text-amber-700 underline">
+            ← Retour au calendrier
+        </a>
+    </div>
+</div>
+{% endblock %}
+

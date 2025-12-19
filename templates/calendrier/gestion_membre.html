@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} Membre{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8">
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ action }} un Membre</h2>
+        
+        {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+            <div class="p-3 rounded-lg {% if message.tags == 'error' %}bg-red-100 text-red-700{% elif message.tags == 'success' %}bg-green-100 text-green-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="{{ form.nom.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nom *
+                    </label>
+                    {{ form.nom }}
+                    {% if form.nom.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.nom.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="{{ form.prenom.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        Prénom
+                    </label>
+                    {{ form.prenom }}
+                    {% if form.prenom.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.prenom.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div>
+                <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    Adresse email *
+                </label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <p class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="{{ form.telephone_whatsapp.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    Numéro WhatsApp
+                </label>
+                <p class="text-xs text-gray-500 mb-2">Format: +225XXXXXXXXX</p>
+                {{ form.telephone_whatsapp }}
+                {% if form.telephone_whatsapp.errors %}
+                <p class="mt-1 text-sm text-red-600">{{ form.telephone_whatsapp.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="{{ form.date_naissance.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    Date de naissance *
+                </label>
+                <p class="text-xs text-gray-500 mb-2">Utilisée pour envoyer les notifications d'anniversaire</p>
+                {{ form.date_naissance }}
+                {% if form.date_naissance.errors %}
+                <p class="mt-1 text-sm text-red-600">{{ form.date_naissance.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="flex items-center">
+                    {{ form.actif }}
+                    <label for="{{ form.actif.id_for_label }}" class="ml-2 text-sm font-medium text-gray-700">
+                        Actif
+                    </label>
+                </div>
+                
+                <div class="flex items-center">
+                    {{ form.notifications_email }}
+                    <label for="{{ form.notifications_email.id_for_label }}" class="ml-2 text-sm font-medium text-gray-700">
+                        Activer les notifications par email
+                    </label>
+                </div>
+            </div>
+            
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded">
+                <p class="text-sm text-gray-700">
+                    <strong>Note :</strong> Les notifications d'anniversaire sont envoyées automatiquement 
+                    la veille de la date de naissance à 10h00 par email.
+                </p>
+            </div>
+            
+            <div class="flex gap-4 pt-4">
+                <button type="submit" 
+                        class="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-6 rounded-lg transition">
+                    Enregistrer
+                </button>
+                <a href="{% url 'calendrier:gestion' %}" 
+                   class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition">
+                    Annuler
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

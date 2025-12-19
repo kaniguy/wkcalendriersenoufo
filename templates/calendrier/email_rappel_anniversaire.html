@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rappel Anniversaire</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.8; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
+    <div style="background: linear-gradient(to right, #d97706, #ea580c); color: white; padding: 40px; text-align: center; border-radius: 10px 10px 0 0;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: bold;">📅 Rappel Anniversaire Demain</h1>
+    </div>
+    
+    <div style="background: #fff; padding: 40px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 10px 10px;">
+        <p style="font-size: 18px; margin-bottom: 25px; color: #1f2937;">
+            Bonsoir famille <strong>WOLOKOULO KALEGUELE</strong>,
+        </p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px; text-align: justify;">
+            Nous vous rappelons que <strong>demain, le {{ date_anniversaire|date:"d F Y" }}</strong>, 
+            nous célébrerons l'anniversaire de <strong style="color: #d97706; font-size: 18px;">{{ membre.nom }} {% if membre.prenom %}{{ membre.prenom }}{% endif %}</strong>.
+        </p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px; text-align: justify;">
+            Pionnier du Senang, il est un véritable soldat de la promotion et de la valorisation de la culture sénoufo. 
+            Son engagement, sa constance et son amour pour nos traditions font de lui un pilier du groupe.
+        </p>
+        
+        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 25px; margin: 30px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <p style="margin: 0; font-size: 17px; font-style: italic; color: #92400e; text-align: center; font-weight: 500;">
+                N'oubliez pas de lui souhaiter un joyeux anniversaire demain ! 🎂✨
+            </p>
+        </div>
+        
+        <p style="font-size: 16px; margin-top: 25px; text-align: center; color: #4b5563;">
+            Le groupe <strong>WOLOKOULO KALEGUELE</strong> compte sur vous pour célébrer ce moment spécial.
+        </p>
+        
+        <div style="border-top: 2px solid #e5e7eb; margin-top: 40px; padding-top: 20px; text-align: right;">
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">
+                — Sekongo Kassoum<br>
+                <span style="font-weight: 600; color: #1f2937;">Premier Responsable des groupes WOLOKOULO KALEGUELE</span>
+            </p>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px; color: #9ca3af; font-size: 12px;">
+        <p>Calendrier Culturel Sénoufo - Valorisation de la culture sénoufo</p>
+    </div>
+</body>
+</html>
+
